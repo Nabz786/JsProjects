@@ -73,7 +73,14 @@ module.exports = class Board {
 	 * @return boolean Whether or not the board is full.
 	 */
 	isBoardFull(){
-
+		for(let i = 0; i < this.height; ++i) {
+				for(let j = 0; j < this.width; ++j) {
+					if(this.board[i][j] == -1) {
+						return false;
+					}
+				}
+		}
+		return true;
 	}
 
 	/**

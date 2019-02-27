@@ -44,6 +44,7 @@ function start(){
 	let myBoard = new board(height, width);
 
 	// Print board
+	myBoard.initBoard();
 	myBoard.printBoard();
 
 	// Loop, asking user input, calling appropriate functions.

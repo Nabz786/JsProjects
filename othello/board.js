@@ -37,6 +37,18 @@ module.exports = class Board {
 	}
 
 	/**
+	 * Initializes the board, places the starting values at their
+	 * respective spots
+	 */
+	initBoard() {
+		//Right now we assume that the board size will be 8x8
+		this.board[3][3] = "B";
+		this.board[3][4] = "W";
+		this.board[4][3] = "W";
+		this.board[4][4] = "B";
+	}
+
+	/**
 	 * isValidMove
 	 * @param row An integer row number.
 	 * @param col An integer column number.

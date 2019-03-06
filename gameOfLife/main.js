@@ -24,6 +24,12 @@ function start() {
     fi = prompt("Enter a file Name: ");
 
     let boardToLoad = JSON.parse(fs.readFileSync(fi, 'utf8'));
+    if ((boardToLoad.height > 30 || boardToLoad.height < 1) ||
+        (boardToLoad.width > 30 || boardToLoad.width < 1)) {
+        console.log("Please Enter Valid Board Dimensions!");
+        process.exit(1);
+    }
+    
     let golInstance = new gol(boardToLoad.height, boardToLoad.width);
     golInstance.copyBoard(boardToLoad.board);
     golInstance.printBoard();

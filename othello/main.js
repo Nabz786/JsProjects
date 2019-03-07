@@ -35,24 +35,6 @@ function loadFile(file) {
  * Driver function.  "main" method, if you will.
  */
 function start() {
-	// // Local variables
-	//  let height = prompt('What height for your board? ');
-	//  let width = prompt('What width for your board? ');
-
-
-	// // SYNCHRONOUSLY read from keyboard
-	//  console.log('Creating a board with size ' + height + ' x ' + width + '.');
-	// // Create new board object
-	// let myBoard = new board(height, width);
-
-	// // Print board
-	// myBoard.initBoard();
-	// myBoard.printBoard();
-
-	// // Loop, asking user input, calling appropriate functions.
-
-	// // Save board example code.
-	// saveFile("test.json", myBoard);
 
 	let p1Disc = prompt("Enter Your Disc Color B or W: ");
 	var p2Disc = p1Disc;
@@ -97,13 +79,6 @@ function start() {
 			turn = turn === 1 ? 2 : 1;
 		}
 	}
-
-
-
-
-
-
-
 }
 
 console.clear();

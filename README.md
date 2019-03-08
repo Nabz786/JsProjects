@@ -3,12 +3,14 @@ Nabeel and Atone JS projects
 
 Othello
 Todo:
-- [] Draw outer board rows and cols 
-- [] Fix valid moves available() bug
+- [X] All Game logic is implemented and works 
+- [X] Draw outer board rows and cols 
+- [X] Fix valid moves available() bug
 - [] User input Error checking
 - [] UI
 
 Game of Life
 Todo:
-- [] User inpu Error checking
+- [X] All Game logic is implemented and works 
+- [] User input Error checking
 - [] UI

@@ -87,13 +87,11 @@ module.exports = class Board {
 			if (i - 1 < 0) {
 				break;
 			}
-			if (this.board[i][col] != disc && this.board[i][col] != EMPTY) {
-				if (this.board[i - 1][col] == disc) {
+			if (this.board[i][col] != disc && this.board[i][col] != EMPTY 
+				&& this.board[i - 1][col] == disc) {
 					console.log("\nU\n");
 					return true;
-				}
-				continue;
-			} else if (this.board[i][col] == EMPTY || row == 0) {
+			} else if (this.board[i][col] == EMPTY || this.board[i][col] == disc) {
 				break;
 			}
 		}
@@ -104,12 +102,11 @@ module.exports = class Board {
 			if (i + 1 >= SIZE) {
 				break;
 			}
-			if (this.board[i][col] != disc && this.board[i][col] != EMPTY) {
-				if (this.board[i + 1][col] == disc) {
+			if (this.board[i][col] != disc && this.board[i][col] != EMPTY 
+				&& this.board[i + 1][col] == disc) {
 					console.log("\nD\n");
 					return true;
-				}
-			} else if (this.board[i][col] == EMPTY || row == SIZE - 1) {
+			} else if (this.board[i][col] == EMPTY || this.board[i][col] == disc) {
 				break;
 			}
 		}
@@ -119,13 +116,11 @@ module.exports = class Board {
 			if (i - 1 < 0) {
 				break;
 			}
-			if (this.board[row][i] != disc && this.board[row][i] != EMPTY) {
-				if (this.board[row][i - 1] == disc) {
+			if (this.board[row][i] != disc && this.board[row][i] != EMPTY 
+				&& this.board[row][i - 1] == disc) {
 					console.log("\nL\n");
 					return true;
-				}
-				continue;
-			} else if (this.board[row][i] == EMPTY || col == 0) {
+			} else if (this.board[row][i] == EMPTY || this.board[row][i] == disc) {
 				break;
 			}
 		}
@@ -135,13 +130,12 @@ module.exports = class Board {
 			if (i + 1 >= SIZE) {
 				break;
 			}
-			if (this.board[row][i] != disc && this.board[row][i] != EMPTY) {
-				if (this.board[row][i + 1] == disc) {
-					console.log("\nR\n");
-					return true;
-				}
-				continue;
-			} else if (this.board[row][i] == EMPTY || col == SIZE - 1) {
+
+			if (this.board[row][i] != disc && this.board[row][i] != EMPTY 
+				&& this.board[row][i + 1] == disc) {
+				console.log(row + " " + i);
+				return true;
+			} else if (this.board[row][i] == EMPTY || this.board[row][i] == disc) {
 				break;
 			}
 		}
@@ -150,7 +144,6 @@ module.exports = class Board {
 		//Temp value used to iterate through columns 
 		//When moving diagonally
 		var colIter = col;
-		// console.log(col + "   " + colIter);
 
 		//Check Diag-Up-Left
 		var colIter = col + 1;
@@ -162,7 +155,7 @@ module.exports = class Board {
 				&& this.board[i + 1][colIter + 1] == disc) {
 				console.log("\nU-L\n");
 				return true;
-			} else if (this.board[i][colIter] == EMPTY) {
+			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
 			}
 			colIter++;
@@ -178,7 +171,7 @@ module.exports = class Board {
 				&& this.board[i + 1][colIter - 1] == disc) {
 				console.log("\nU-R\n");
 				return true;
-			} else if (this.board[i][colIter] == EMPTY) {
+			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
 			}
 			colIter--;
@@ -195,7 +188,7 @@ module.exports = class Board {
 				&& this.board[i - 1][colIter + 1] == disc) {
 				console.log("\nD-R\n");
 				return true;
-			} else if (this.board[i][colIter] == EMPTY) {
+			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
 			}
 			colIter++;
@@ -211,7 +204,7 @@ module.exports = class Board {
 				&& this.board[i - 1][colIter - 1] == disc) {
 				console.log("\nD-L\n");
 				return true;
-			} else if (this.board[i][colIter] == EMPTY) {
+			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
 			}
 			colIter--;
@@ -459,7 +452,7 @@ module.exports = class Board {
 	 * @return bool Whether or not the game is over.
 	 */
 	isGameOver() {
-		if (this.isBoardFull(this.board) || !this.isValidMoveAvailable("W") ||
+		if (this.isBoardFull(this.board) && !this.isValidMoveAvailable("W") &&
 			!this.isValidMoveAvailable("B")) {
 			return true;
 		}

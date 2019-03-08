@@ -27,8 +27,9 @@ function saveFile(file, contents) {
  * @return contents - The object converted from JSON.
  */
 function loadFile(file) {
+	let fs = require('fs');
 	let boardToLoad = JSON.parse(fs.readFileSync(file, 'utf8'));
-	return boardToLoad;
+	return boardToLoad.board;
 }
 
 /**
@@ -41,6 +42,8 @@ function start() {
 	var turn = 1;
 	if (p1Disc === "B") {
 		var p2Disc = "W";
+	} else {
+		var p2Disc = "B"
 	}
 
 	console.log();
@@ -49,6 +52,8 @@ function start() {
 	console.log("Player " + turn + " will start the game!");
 	let myBoard = new board(8, 8);
 	myBoard.initBoard();
+	myBoard.board = loadFile("test1.json");
+	// console.log(myBoard.board);
 
 	var row, col;
 	while (!myBoard.isGameOver(myBoard.board)) {
@@ -73,12 +78,20 @@ function start() {
 					continue;
 				}
 				break;
-			} while (true) {
+			} while (true);
 				myBoard.placeDiskAt(row, col, (turn === 1 ? p1Disc : p2Disc));
 			}
 			turn = turn === 1 ? 2 : 1;
-		}
 	}
+
+	let winner = myBoard.checkWinner();
+	if(winner == "B" || winner == "W") {
+		console.log("The winner was " + winner);
+	} else {
+		console.log("Game is over, there was no winner");
+	}
+	process.exit(1);
+
 }
 
 console.clear();

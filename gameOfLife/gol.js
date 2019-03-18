@@ -86,6 +86,9 @@ module.exports = class Gol {
      * Mutates grid according to conways rules 
      */
     mutate() {
+
+        //Create a temporary grid to modify as we don't
+        //want to modify the original board
         let tempGrid = [];
         for (let row = 0; row < this.height; ++row) {
             let tmp = [];
@@ -95,6 +98,9 @@ module.exports = class Gol {
             tempGrid.push(tmp);
         }
 
+        //Loop through each cell, find the neighbors
+        //Update each cell to alive or dead status based
+        //on the number of neighbors
         for (let r = 0; r < this.height; ++r) {
             for (let c = 0; c < this.width; ++c) {
                 let numNeigh = this.getNeighbors(r, c);
@@ -112,7 +118,8 @@ module.exports = class Gol {
                 }
             }
         }
-
+        //Apply the modifications made to the temp board to the current
+        //"Actual" board
         this.copyBoard(tempGrid);
     }
 

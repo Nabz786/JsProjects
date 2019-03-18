@@ -5,8 +5,6 @@
 
 module.exports = class Board {
 
-
-
 	/**
 	 * Construct the object with required state
 	 */
@@ -14,6 +12,8 @@ module.exports = class Board {
 		this.height = height;
 		this.width = width;
 		this.board = [];
+
+		//Create an empty board to start
 		for (let i = 0; i < this.height; ++i) {
 			let tmp = [];
 			for (let j = 0; j < this.width; ++j) {
@@ -28,7 +28,6 @@ module.exports = class Board {
 	 * Print a representation of the board to the terminal.
 	 */
 	printBoard() {
-
 		console.log();
 		for (let i = 0; i < 8; ++i) {
 			if (i === 0) {
@@ -72,15 +71,19 @@ module.exports = class Board {
 	 */
 
 	isValid(row, col, disc) {
-		//console.log(row);
-		//console.log(col);
-
 		var SIZE = 8;
 		var EMPTY = -1;
 
+		//If the position where we want to place the disk isn't empty
+		//we can't place a disk at that spot
 		if (this.board[row][col] != EMPTY) {
 			return false;
 		}
+
+		//If we made it this far we shall check each indiviual direction
+		//We simply move away from the placed disk
+		//If we find an enemy disk bounded by a friendly disk
+		//We write in that direction
 
 		//Check up
 		for (let i = row - 1; i > -1; i--) {
@@ -471,6 +474,8 @@ module.exports = class Board {
 
 		let SIZE = 8;
 
+		//Loop through each spot in the board
+		//and count each player's disks
 		for (let i = 0; i < SIZE; i++) {
 			for (let j = 0; j < SIZE; j++) {
 				if (this.board[i][j] == 'W') {
@@ -481,6 +486,8 @@ module.exports = class Board {
 			}
 		}
 
+		//Determine who won based on the disk count
+		//or determine is a tie exists
 		if (wCount > bCount) {
 			return "W";
 		} else if (bCount > wCount) {

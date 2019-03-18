@@ -28,8 +28,13 @@ function saveFile(file, contents) {
  */
 function loadFile(file) {
 	let fs = require('fs');
-	let boardToLoad = JSON.parse(fs.readFileSync(file, 'utf8'));
-	return boardToLoad.board;
+	try {
+		let boardToLoad = JSON.parse(fs.readFileSync(file, 'utf8'));
+		return boardToLoad.board;
+	} catch (err) {
+		console.log("Sorry, I couldn't find that file!")
+		process.exit(1);
+	}
 }
 
 /**
@@ -37,13 +42,18 @@ function loadFile(file) {
  */
 function start() {
 
+	//Prompt player one to choose their disc
+	//Player 2 will be the other disc
 	let p1Disc = prompt("Enter Your Disc Color B or W: ");
 	var p2Disc = p1Disc;
 	var turn = 1;
 	if (p1Disc === "B") {
 		var p2Disc = "W";
-	} else {
+	} else if(p1Disc === "W") {
 		var p2Disc = "B"
+	} else {
+		console.log("Sorry! Invalid Disc selection, Exiting!");
+		process.exit(1);
 	}
 
 	console.log();
@@ -52,9 +62,21 @@ function start() {
 	console.log("Player " + turn + " will start the game!");
 	let myBoard = new board(8, 8);
 	myBoard.initBoard();
-	myBoard.board = loadFile("test1.json");
-	// console.log(myBoard.board);
 
+	//Ask user if they want to load a file, if they do load it,
+	//if not continue with the original game board
+	let wantToLoad = prompt("Do you want to load a file Y or N?: ");
+	if (wantToLoad === "Y") {
+		let fileName = prompt("Enter a file name: ")
+		myBoard.board = loadFile(fileName);
+	} else if (wantToLoad === "N") {
+		//Do Nothing
+	} else {
+		console.log("Sorry I don't know what that is, Exiting!");
+		process.exit(1);
+	}
+
+	//Main Game loop
 	var row, col;
 	while (!myBoard.isGameOver(myBoard.board)) {
 		myBoard.printBoard();
@@ -79,19 +101,20 @@ function start() {
 				}
 				break;
 			} while (true);
-				myBoard.placeDiskAt(row, col, (turn === 1 ? p1Disc : p2Disc));
-			}
-			turn = turn === 1 ? 2 : 1;
+			myBoard.placeDiskAt(row, col, (turn === 1 ? p1Disc : p2Disc));
+		}
+		turn = turn === 1 ? 2 : 1;
 	}
 
+	//Find the winner if there is one
+	//Print a unique message and exit the game
 	let winner = myBoard.checkWinner();
-	if(winner == "B" || winner == "W") {
+	if (winner == "B" || winner == "W") {
 		console.log("The winner was " + winner);
 	} else {
 		console.log("Game is over, there was no winner");
 	}
 	process.exit(1);
-
 }
 
 console.clear();

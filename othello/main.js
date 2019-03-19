@@ -30,7 +30,7 @@ function loadFile(file) {
 	let fs = require('fs');
 	try {
 		let boardToLoad = JSON.parse(fs.readFileSync(file, 'utf8'));
-		return boardToLoad.board;
+		return boardToLoad;
 	} catch (err) {
 		console.log("Sorry, I couldn't find that file!")
 		process.exit(1);
@@ -44,13 +44,13 @@ function start() {
 
 	//Prompt player one to choose their disc
 	//Player 2 will be the other disc
-	let p1Disc = prompt("Enter Your Disc Color B or W: ");
+	let p1Disc = prompt("Enter Your Disc Color B or W: ").toUpperCase();
 	var p2Disc = p1Disc;
 	var turn = 1;
-	if (p1Disc === "B") {
+	if (p1Disc.toUpperCase() === "B") {
 		var p2Disc = "W";
-	} else if(p1Disc === "W") {
-		var p2Disc = "B"
+	} else if(p1Disc.toUpperCase() === "W") {
+		var p2Disc = "B";
 	} else {
 		console.log("Sorry! Invalid Disc selection, Exiting!");
 		process.exit(1);
@@ -60,15 +60,32 @@ function start() {
 	console.log("<<<<<Welcome To othello!>>>>>");
 	console.log("Player 1: " + p1Disc + " Player 2: " + p2Disc);
 	console.log("Player " + turn + " will start the game!");
-	let myBoard = new board(8, 8);
+
+
+	//Prompt the user to enter the height/width of the gameboard
+	//Boards not of even dimensions and less than size 4
+	//Will not be allowed
+	let height = prompt("Please Enter a height for your board: ");
+	let width = prompt("Please enter a width for your board: ");
+	if(height % 2 != 0 || width %2 != 0){
+		console.log("You must have a board with even dimensions!")
+		process.exit(1);
+	} else if (height < 4 || width < 4) {
+		console.log("That would be too small of a board, Try again!");
+		process.exit(1);
+	}
+
+	var myBoard = new board(height, width);
 	myBoard.initBoard();
 
 	//Ask user if they want to load a file, if they do load it,
 	//if not continue with the original game board
-	let wantToLoad = prompt("Do you want to load a file Y or N?: ");
+	let wantToLoad = prompt("Do you want to load a file Y or N?: ").toUpperCase();
 	if (wantToLoad === "Y") {
 		let fileName = prompt("Enter a file name: ")
-		myBoard.board = loadFile(fileName);
+		var loadData = loadFile(fileName);
+		myBoard = new board(loadData.height, loadData.width);
+		myBoard.board = loadData.board;
 	} else if (wantToLoad === "N") {
 		//Do Nothing
 	} else {
@@ -87,10 +104,16 @@ function start() {
 				console.log("To Quit, Enter Q in both prompts");
 				var row = prompt("Player: " + turn + " ,Enter the location row to place your disc: ");
 				var col = prompt("Player: " + turn + " ,Enter the location col to place your disc: ");
+				if((isNaN(row) || isNaN(col))) {
+					if(row.toUpperCase() !== "Q" && col.toUpperCase() !=="Q") {
+						console.log("Sorry, Invalid Input. Try again!");
+						continue;
+					}
+				}
 				if (row < 1 || row > 8 || col < 1 || col > 8) {
 					console.log("Sorry, invalid input. Try again");
 					continue;
-				} else if (row === "Q") {
+				} else if (row.toUpperCase() === "Q") {
 					process.exit(1);
 				}
 				row--;

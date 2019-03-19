@@ -67,7 +67,7 @@ function start() {
         console.log("Anything Else to Iterate once!");
 
         let usrTyped = prompt("What will it be?: ");
-        switch (usrTyped) {
+        switch (usrTyped.toUpperCase()) {
             case "Q":
                 process.exit(1);
                 break;

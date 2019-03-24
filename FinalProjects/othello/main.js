@@ -80,7 +80,7 @@ function start() {
 
 	//Ask user if they want to load a file, if they do load it,
 	//if not continue with the original game board
-	let wantToLoad = prompt("Do you want to load a file Y or N?: ").toUpperCase();
+	let wantToLoad = prompt("Do you want to load a file Y or N? This will reset your chosen board dimensions!: ").toUpperCase();
 	if (wantToLoad === "Y") {
 		let fileName = prompt("Enter a file name: ")
 		var loadData = loadFile(fileName);
@@ -104,18 +104,24 @@ function start() {
 				console.log("To Quit, Enter Q in both prompts");
 				var row = prompt("Player: " + turn + " ,Enter the location row to place your disc: ");
 				var col = prompt("Player: " + turn + " ,Enter the location col to place your disc: ");
+
+				//Check if the user input is a number,
+				//If not, check if it is the game over identifier 'Q'
+				//If it is, exit the program, else tell the user they entered something invalid
 				if((isNaN(row) || isNaN(col))) {
-					if(row.toUpperCase() !== "Q" && col.toUpperCase() !=="Q") {
+					if(row.toUpperCase() == "Q" ) {
+						console.log("Exiting, As requested");
+						process.exit(1);
+					} else {
 						console.log("Sorry, Invalid Input. Try again!");
 						continue;
 					}
 				}
-				if (row < 1 || row > 8 || col < 1 || col > 8) {
+				else if (row < 1 || row > myBoard.height || col < 1 || col > myBoard.width) {
 					console.log("Sorry, invalid input. Try again");
 					continue;
-				} else if (row.toUpperCase() === "Q") {
-					process.exit(1);
 				}
+
 				row--;
 				col--;
 				if (!myBoard.isValid(row, col, (turn === 1 ? p1Disc : p2Disc))) {

@@ -16,24 +16,49 @@ function saveFile(file, contents) {
 }
 
 /**
+ * loadFile
+ * SYNCHRONOUS (blocking) file read function.
+ * @param file - The full filename path we wish to load an object from.
+ * @return contents - The object converted from JSON.
+ */
+function loadFile(file) {
+	let fs = require('fs');
+	try {
+		let boardToLoad = JSON.parse(fs.readFileSync(file, 'utf8'));
+		return boardToLoad;
+	} catch (err) {
+		console.log("Sorry, I couldn't find that file!")
+		process.exit(1);
+	}
+}
+
+/**
  * This is where the program executes
  */
 function start() {
 
+    //Prompt the user to enter a filename
     let fs = require('fs');
     fi = prompt("Enter a file Name: ");
 
-    let boardToLoad = JSON.parse(fs.readFileSync(fi, 'utf8'));
+    //Load the board and check the dimensions
+    //If either dimension doesn't meet our requirements
+    //Exit the program and print a message
+    // let boardToLoad = JSON.parse(fs.readFileSync(fi, 'utf8'));
+    let boardToLoad = loadFile(fi);
     if ((boardToLoad.height > 30 || boardToLoad.height < 1) ||
         (boardToLoad.width > 30 || boardToLoad.width < 1)) {
         console.log("Please Enter Valid Board Dimensions!");
         process.exit(1);
     }
     
+    //If we made it this far, we can load the board and start the 
+    //Simulation
     let golInstance = new gol(boardToLoad.height, boardToLoad.width);
     golInstance.copyBoard(boardToLoad.board);
     golInstance.printBoard();
 
+    //Execute the simulation loop
     while (true) {
         console.log();
         console.log("Q - Quit");
@@ -42,7 +67,7 @@ function start() {
         console.log("Anything Else to Iterate once!");
 
         let usrTyped = prompt("What will it be?: ");
-        switch (usrTyped) {
+        switch (usrTyped.toUpperCase()) {
             case "Q":
                 process.exit(1);
                 break;

@@ -6,11 +6,10 @@ Todo:
 - [X] All Game logic is implemented and works 
 - [X] Draw outer board rows and cols 
 - [X] Fix valid moves available() bug
-- [] User input Error checking
-- [] UI
+- [X] User input Error checking
+
 
 Game of Life
 Todo:
 - [X] All Game logic is implemented and works 
-- [] User input Error checking
-- [] UI
+- [X] User input Error checking

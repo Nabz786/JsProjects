@@ -5,8 +5,6 @@
 
 module.exports = class Board {
 
-
-
 	/**
 	 * Construct the object with required state
 	 */
@@ -14,6 +12,8 @@ module.exports = class Board {
 		this.height = height;
 		this.width = width;
 		this.board = [];
+
+		//Create an empty board to start
 		for (let i = 0; i < this.height; ++i) {
 			let tmp = [];
 			for (let j = 0; j < this.width; ++j) {
@@ -28,7 +28,6 @@ module.exports = class Board {
 	 * Print a representation of the board to the terminal.
 	 */
 	printBoard() {
-
 		console.log();
 		for (let i = 0; i < 8; ++i) {
 			if (i === 0) {
@@ -57,10 +56,10 @@ module.exports = class Board {
 	 */
 	initBoard() {
 		//Right now we assume that the board size will be 8x8
-		this.board[3][3] = "W";
-		this.board[3][4] = "B";
-		this.board[4][3] = "B";
-		this.board[4][4] = "W";
+		this.board[(this.width/2)-1][(this.width/2)-1] = "W";
+		this.board[(this.width/2)-1][(this.width/2)] = "B";
+		this.board[(this.width/2)][(this.width/2)-1] = "B";
+		this.board[(this.width/2)][(this.width/2)] = "W";
 	}
 
 	/**
@@ -72,15 +71,19 @@ module.exports = class Board {
 	 */
 
 	isValid(row, col, disc) {
-		//console.log(row);
-		//console.log(col);
-
-		var SIZE = 8;
+		var SIZE = this.width;
 		var EMPTY = -1;
 
+		//If the position where we want to place the disk isn't empty
+		//we can't place a disk at that spot
 		if (this.board[row][col] != EMPTY) {
 			return false;
 		}
+
+		//If we made it this far we shall check each indiviual direction
+		//We simply move away from the placed disk
+		//If we find an enemy disk bounded by a friendly disk
+		//We write in that direction
 
 		//Check up
 		for (let i = row - 1; i > -1; i--) {
@@ -89,7 +92,6 @@ module.exports = class Board {
 			}
 			if (this.board[i][col] != disc && this.board[i][col] != EMPTY 
 				&& this.board[i - 1][col] == disc) {
-					console.log("\nU\n");
 					return true;
 			} else if (this.board[i][col] == EMPTY || this.board[i][col] == disc) {
 				break;
@@ -104,7 +106,6 @@ module.exports = class Board {
 			}
 			if (this.board[i][col] != disc && this.board[i][col] != EMPTY 
 				&& this.board[i + 1][col] == disc) {
-					console.log("\nD\n");
 					return true;
 			} else if (this.board[i][col] == EMPTY || this.board[i][col] == disc) {
 				break;
@@ -118,7 +119,6 @@ module.exports = class Board {
 			}
 			if (this.board[row][i] != disc && this.board[row][i] != EMPTY 
 				&& this.board[row][i - 1] == disc) {
-					console.log("\nL\n");
 					return true;
 			} else if (this.board[row][i] == EMPTY || this.board[row][i] == disc) {
 				break;
@@ -133,7 +133,6 @@ module.exports = class Board {
 
 			if (this.board[row][i] != disc && this.board[row][i] != EMPTY 
 				&& this.board[row][i + 1] == disc) {
-				console.log(row + " " + i);
 				return true;
 			} else if (this.board[row][i] == EMPTY || this.board[row][i] == disc) {
 				break;
@@ -153,7 +152,6 @@ module.exports = class Board {
 			}
 			if (this.board[i][colIter] != disc && this.board[i][colIter] != EMPTY
 				&& this.board[i + 1][colIter + 1] == disc) {
-				console.log("\nU-L\n");
 				return true;
 			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
@@ -169,7 +167,6 @@ module.exports = class Board {
 			}
 			if (this.board[i][colIter] != disc && this.board[i][colIter] != EMPTY
 				&& this.board[i + 1][colIter - 1] == disc) {
-				console.log("\nU-R\n");
 				return true;
 			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
@@ -186,7 +183,6 @@ module.exports = class Board {
 			//console.log(col);
 			if (this.board[i][colIter] != disc && this.board[i][colIter] != EMPTY
 				&& this.board[i - 1][colIter + 1] == disc) {
-				console.log("\nD-R\n");
 				return true;
 			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
@@ -202,7 +198,6 @@ module.exports = class Board {
 			}
 			if (this.board[i][colIter] != disc && this.board[i][colIter] != EMPTY
 				&& this.board[i - 1][colIter - 1] == disc) {
-				console.log("\nD-L\n");
 				return true;
 			} else if (this.board[i][colIter] == EMPTY || this.board[i][colIter] == disc) {
 				break;
@@ -225,7 +220,7 @@ module.exports = class Board {
 
 		var numWrite = 0;
 		var colIter = 0;
-		var SIZE = 8;
+		var SIZE = this.width;
 		var EMPTY = -1;
 
 		//Check move up
@@ -236,7 +231,6 @@ module.exports = class Board {
 			}
 			if (this.board[i][col] != disc && this.board[i][col] != EMPTY &&
 				this.board[i + 1][col] == disc) {
-				console.log("\nUp\n");
 				for (let j = row + 1; j < SIZE; j++) {
 					if (numWrite > 0) {
 						this.board[j][col] = disc;
@@ -257,7 +251,6 @@ module.exports = class Board {
 			numWrite++;
 			if (this.board[i][col] != disc && this.board[i][col] != EMPTY &&
 				this.board[i - 1][col] == disc) {
-				console.log("\nDown\n");
 				for (let j = row - 1; j > -1; j--) {
 					if (numWrite > 0) {
 						this.board[j][col] = disc;
@@ -278,7 +271,6 @@ module.exports = class Board {
 			numWrite++;
 			if (this.board[row][i] != disc && this.board[row][i] != EMPTY &&
 				this.board[row][i - 1] == disc) {
-				console.log("\nRight\n");
 				for (let j = col - 1; j > -1; j--) {
 					if (numWrite > 0) {
 						this.board[row][j] = disc;
@@ -299,7 +291,6 @@ module.exports = class Board {
 			numWrite++;
 			if (this.board[row][i] != disc && this.board[row][i] != EMPTY &&
 				this.board[row][i + 1] == disc) {
-				console.log("\nLeft\n");
 				for (let j = col + 1; j < SIZE; j++) {
 					if (numWrite > 0) {
 						this.board[row][j] = disc;
@@ -345,7 +336,6 @@ module.exports = class Board {
 			numWrite++;
 			if (this.board[i][colIter] != disc && this.board[i][colIter] != EMPTY &&
 				this.board[i + 1][colIter + 1] == disc) {
-				console.log("\nUp-Left\n");
 				let colTemp = col + 1;
 				for (let j = row + 1; j < SIZE; j++) {
 					if (numWrite > 0) {
@@ -370,7 +360,6 @@ module.exports = class Board {
 			numWrite++;
 			if (this.board[i][colIter] != disc && this.board[i][colIter] != EMPTY
 				&& this.board[i - 1][colIter + 1] == disc) {
-				console.log("\nDown-left\n");
 				let colTemp = col + 1;
 				for (let j = row - 1; j > -1; j--) {
 					if (numWrite > 0) {
@@ -395,7 +384,6 @@ module.exports = class Board {
 			numWrite++;
 			if (this.board[i][colIter] != disc && this.board[i][colIter] != EMPTY
 				&& this.board[i - 1][colIter - 1] == disc) {
-				console.log("\nDown-right\n");
 				let colTemp = col - 1;
 				for (let j = row - 1; j > -1; j--) {
 					if (numWrite > 0) {
@@ -419,7 +407,7 @@ module.exports = class Board {
 	 */
 	isValidMoveAvailable(disc) {
 
-		var SIZE = 8;
+		var SIZE = this.width;
 
 		for (let i = 0; i < SIZE; i++) {
 			for (let j = 0; j < SIZE; j++) {
@@ -452,8 +440,8 @@ module.exports = class Board {
 	 * @return bool Whether or not the game is over.
 	 */
 	isGameOver() {
-		if (this.isBoardFull(this.board) && !this.isValidMoveAvailable("W") &&
-			!this.isValidMoveAvailable("B")) {
+		if (this.isBoardFull(this.board) || (!this.isValidMoveAvailable("W") &&
+			!this.isValidMoveAvailable("B"))) {
 			return true;
 		}
 
@@ -469,8 +457,10 @@ module.exports = class Board {
 		let bCount = 0;
 		let wCount = 0;
 
-		let SIZE = 8;
+		let SIZE = this.width;
 
+		//Loop through each spot in the board
+		//and count each player's disks
 		for (let i = 0; i < SIZE; i++) {
 			for (let j = 0; j < SIZE; j++) {
 				if (this.board[i][j] == 'W') {
@@ -481,6 +471,8 @@ module.exports = class Board {
 			}
 		}
 
+		//Determine who won based on the disk count
+		//or determine is a tie exists
 		if (wCount > bCount) {
 			return "W";
 		} else if (bCount > wCount) {

@@ -1,3 +1,6 @@
+//#!/bin/bash
+
+
 /**
  * Othello
  * Javascript project for CIS 343.
@@ -52,7 +55,7 @@ function start() {
 	console.log("Player " + turn + " will start the game!");
 	let myBoard = new board(8, 8);
 	myBoard.initBoard();
-	myBoard.board = loadFile("test1.json");
+	//myBoard.board = loadFile("test1.json");
 	// console.log(myBoard.board);
 
 	var row, col;

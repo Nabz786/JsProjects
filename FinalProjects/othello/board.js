@@ -56,10 +56,10 @@ module.exports = class Board {
 	 */
 	initBoard() {
 		//Right now we assume that the board size will be 8x8
-		this.board[(this.width/2)-1][(this.width/2)-1] = "W";
-		this.board[(this.width/2)-1][(this.width/2)] = "B";
-		this.board[(this.width/2)][(this.width/2)-1] = "B";
-		this.board[(this.width/2)][(this.width/2)] = "W";
+		this.board[(this.width/2)-1][(this.width/2)-1] = "B";
+		this.board[(this.width/2)-1][(this.width/2)] = "W";
+		this.board[(this.width/2)][(this.width/2)-1] = "W";
+		this.board[(this.width/2)][(this.width/2)] = "B";
 	}
 
 	/**

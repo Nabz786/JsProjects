@@ -4,6 +4,7 @@
   "description": "An Othello game.",
   "main": "main.js",
   "dependencies": {
+    "package.json": "^2.0.1",
     "prompt-sync": "^4.1.6"
   },
   "devDependencies": {},

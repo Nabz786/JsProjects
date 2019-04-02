@@ -65,29 +65,31 @@ function start() {
 	//Prompt the user to enter the height/width of the gameboard
 	//Boards not of even dimensions and less than size 4
 	//Will not be allowed
-	let height = prompt("Please Enter a height for your board: ");
-	let width = prompt("Please enter a width for your board: ");
-	if(height % 2 != 0 || width %2 != 0){
+	let size = prompt("Please Enter the size for your board (enter size M for MxM): ");
+	//let width = prompt("Please enter a width for your board: ");
+	if(size % 2 != 0){
 		console.log("You must have a board with even dimensions!")
 		process.exit(1);
-	} else if (height < 4 || width < 4) {
+	} else if (size < 4) {
 		console.log("That would be too small of a board, Try again!");
 		process.exit(1);
 	}
+	 
 
-	var myBoard = new board(height, width);
+	var myBoard = new board(size, size);
 	myBoard.initBoard();
 
 	//Ask user if they want to load a file, if they do load it,
 	//if not continue with the original game board
-	let wantToLoad = prompt("Do you want to load a file Y or N? This will reset your chosen board dimensions!: ").toUpperCase();
-	if (wantToLoad === "Y") {
+	let wantToLoad = prompt("Do you want to load a file Y or N? This will reset your chosen board dimensions!: ");
+	//let wantToLoad = "N";
+	if (wantToLoad.toUpperCase() === "Y") {
 		let fileName = prompt("Enter a file name: ")
 		var loadData = loadFile(fileName);
-		myBoard = new board(loadData.height, loadData.width);
+		myBoard = new board(loadData.size, loadData.size);
 		myBoard.board = loadData.board;
-	} else if (wantToLoad === "N") {
-		//Do Nothing
+	} else if (wantToLoad.toUpperCase() === "N") {
+		console.log("Continuing Game...");
 	} else {
 		console.log("Sorry I don't know what that is, Exiting!");
 		process.exit(1);
@@ -101,23 +103,17 @@ function start() {
 			console.log("No Valid moves available for player " + turn + " you will lose your turn");
 		} else {
 			do {
-				console.log("To Quit, Enter Q in both prompts");
+				console.log("To Quit, Enter Q ");
 				var row = prompt("Player: " + turn + " ,Enter the location row to place your disc: ");
+					isQuit(row);
 				var col = prompt("Player: " + turn + " ,Enter the location col to place your disc: ");
+					isQuit(col);
 
 				//Check if the user input is a number,
 				//If not, check if it is the game over identifier 'Q'
 				//If it is, exit the program, else tell the user they entered something invalid
-				if((isNaN(row) || isNaN(col))) {
-					if(row.toUpperCase() == "Q" ) {
-						console.log("Exiting, As requested");
-						process.exit(1);
-					} else {
-						console.log("Sorry, Invalid Input. Try again!");
-						continue;
-					}
-				}
-				else if (row < 1 || row > myBoard.height || col < 1 || col > myBoard.width) {
+				
+				if (row < 1 || row > myBoard.size || col < 1 || col > myBoard.size) {
 					console.log("Sorry, invalid input. Try again");
 					continue;
 				}
@@ -144,6 +140,18 @@ function start() {
 		console.log("Game is over, there was no winner");
 	}
 	process.exit(1);
+}
+
+
+function isQuit(quit){
+	if(isNaN(quit) ) {
+		if(quit.toUpperCase() == "Q" ) {
+			console.log("Exiting, As requested");
+			process.exit(1);
+			} else {
+			console.log("Sorry, Invalid Input. Try again!");
+			}
+			}
 }
 
 console.clear();

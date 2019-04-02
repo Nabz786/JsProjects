@@ -79,6 +79,8 @@ function start() {
 	var myBoard = new board(size, size);
 	myBoard.initBoard();
 
+	let bSize = myBoard.height;
+
 	//Ask user if they want to load a file, if they do load it,
 	//if not continue with the original game board
 	let wantToLoad = prompt("Do you want to load a file Y or N? This will reset your chosen board dimensions!: ");
@@ -86,7 +88,7 @@ function start() {
 	if (wantToLoad.toUpperCase() === "Y") {
 		let fileName = prompt("Enter a file name: ")
 		var loadData = loadFile(fileName);
-		myBoard = new board(loadData.size, loadData.size);
+		myBoard = new board(loadData.height, loadData.width);
 		myBoard.board = loadData.board;
 	} else if (wantToLoad.toUpperCase() === "N") {
 		console.log("Continuing Game...");
@@ -97,23 +99,32 @@ function start() {
 
 	//Main Game loop
 	var row, col;
+
 	while (!myBoard.isGameOver(myBoard.board)) {
 		myBoard.printBoard();
 		if (!myBoard.isValidMoveAvailable((turn === 1 ? p1Disc : p2Disc))) {
 			console.log("No Valid moves available for player " + turn + " you will lose your turn");
 		} else {
+			//restart loop if any invalid input
+			restartLoop:
 			do {
 				console.log("To Quit, Enter Q ");
 				var row = prompt("Player: " + turn + " ,Enter the location row to place your disc: ");
-					isQuit(row);
+					if(isQuit(row)){
+						continue restartLoop;
+					}
 				var col = prompt("Player: " + turn + " ,Enter the location col to place your disc: ");
-					isQuit(col);
+					if(isQuit(col)) {
+						continue restartLoop;
+					}
 
 				//Check if the user input is a number,
 				//If not, check if it is the game over identifier 'Q'
 				//If it is, exit the program, else tell the user they entered something invalid
+				var tempR = parseInt(row, 10);
+				var tempC = parseInt(col, 10);
 				
-				if (row < 1 || row > myBoard.size || col < 1 || col > myBoard.size) {
+				if (tempR < 1 || tempR > myBoard.height|| tempC < 1 || tempC > myBoard.width) {
 					console.log("Sorry, invalid input. Try again");
 					continue;
 				}
@@ -142,16 +153,20 @@ function start() {
 	process.exit(1);
 }
 
-
+/**
+ *Checks if the users row.col input indicates whether or not they want to quit
+ **/
 function isQuit(quit){
 	if(isNaN(quit) ) {
 		if(quit.toUpperCase() == "Q" ) {
-			console.log("Exiting, As requested");
-			process.exit(1);
+				console.log("Exiting, As requested");
+				process.exit(1);
 			} else {
-			console.log("Sorry, Invalid Input. Try again!");
+				console.log("Sorry, Invalid Input. Try again!");
+				return true;
 			}
-			}
+		}
+	return false;
 }
 
 console.clear();

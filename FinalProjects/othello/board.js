@@ -29,7 +29,7 @@ module.exports = class Board {
 	 */
 	printBoard() {
 		console.log();
-		for (let i = 0; i < 8; ++i) {
+		for (let i = 0; i < this.width; ++i) {
 			if (i === 0) {
 				process.stdout.write("\t");
 			}

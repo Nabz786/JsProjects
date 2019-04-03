@@ -77,9 +77,8 @@ function start() {
 	 
 
 	var myBoard = new board(size, size);
+	//initialize board
 	myBoard.initBoard();
-
-	let bSize = myBoard.height;
 
 	//Ask user if they want to load a file, if they do load it,
 	//if not continue with the original game board
@@ -88,7 +87,7 @@ function start() {
 	if (wantToLoad.toUpperCase() === "Y") {
 		let fileName = prompt("Enter a file name: ")
 		var loadData = loadFile(fileName);
-		myBoard = new board(loadData.height, loadData.width);
+		myBoard = new board(loadData.size, loadData.size);
 		myBoard.board = loadData.board;
 	} else if (wantToLoad.toUpperCase() === "N") {
 		console.log("Continuing Game...");
@@ -108,16 +107,20 @@ function start() {
 			//restart loop if any invalid input
 			restartLoop:
 			do {
-				console.log("To Quit, Enter Q ");
+				console.log("To Quit, Enter Q or S to save current board");
 				var row = prompt("Player: " + turn + " ,Enter the location row to place your disc: ");
+					willSave(row, myBoard.board2);
+				
 					if(isQuit(row)){
 						continue restartLoop;
 					}
+
+					
 				var col = prompt("Player: " + turn + " ,Enter the location col to place your disc: ");
+					willSave(row, myBoard.board2);
 					if(isQuit(col)) {
 						continue restartLoop;
 					}
-
 				//Check if the user input is a number,
 				//If not, check if it is the game over identifier 'Q'
 				//If it is, exit the program, else tell the user they entered something invalid
@@ -147,9 +150,18 @@ function start() {
 	let winner = myBoard.checkWinner();
 	if (winner == "B" || winner == "W") {
 		console.log("The winner was " + winner);
+		myBoard.printBoard();
+		let save = prompt("Press S to save this board press anything else to continue out: ").toUpperCase();
+		willSave(save,myBoard.board2);
+
 	} else {
 		console.log("Game is over, there was no winner");
+		myBoard.printBoard();
+		let save = prompt("Press S to save this board press anything else to continue out: ").toUpperCase();
+		willSave(save,myBoard.board2);
+
 	}
+
 	process.exit(1);
 }
 
@@ -158,15 +170,30 @@ function start() {
  **/
 function isQuit(quit){
 	if(isNaN(quit) ) {
-		if(quit.toUpperCase() == "Q" ) {
+		if(quit.toUpperCase() === "Q" ) {
 				console.log("Exiting, As requested");
 				process.exit(1);
-			} else {
+			} 
+		else if(quit.toUpperCase() === "S"){
+			console.log("Now redo input");
+			return true;
+		}
+		else {
 				console.log("Sorry, Invalid Input. Try again!");
 				return true;
 			}
 		}
 	return false;
+}
+
+function willSave(save, contents){
+	if(save.toUpperCase() === "S"){
+	let fileName =	prompt("Enter File Name: ");
+	
+	saveFile(fileName, contents);
+
+	}
+
 }
 
 console.clear();

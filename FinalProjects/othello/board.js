@@ -13,6 +13,7 @@ module.exports = class Board {
 		this.width = width;
 		this.board = [];
 
+
 		//Create an empty board to start
 		for (let i = 0; i < this.height; ++i) {
 			let tmp = [];
@@ -21,8 +22,15 @@ module.exports = class Board {
 			}
 			this.board.push(tmp);
 		}
-	}
 
+		//used for saving
+		 this.board2 = {
+		
+		"size": `${this.height}`,
+
+		"board": this.board
+		};
+	}
 
 	/**
 	 * Print a representation of the board to the terminal.
